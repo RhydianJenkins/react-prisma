@@ -1,28 +1,42 @@
-const path = require('path');
+// const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const port = process.env.PORT || 3000;
+const mode = 'development';
+
 module.exports = {
-  entry: path.join(__dirname, "src", "index.js"),
+  mode: mode,
+  entry: './src/index.js',
   output: {
-    path:path.resolve(__dirname, "dist"),
+    filename: 'bundle.[fullhash].js'
   },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
-        test: /\.?js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
+            cacheDirectory: true,
+            cacheCompression: false,
+            envName: mode
           }
         }
-      },
+      }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "index.html"),
-    }),
+      template: 'public/index.html',
+      favicon: 'public/favicon.ico'
+    })
   ],
-}
+  devServer: {
+    host: 'localhost',
+    port: port,
+    historyApiFallback: true,
+    open: true
+  }
+};

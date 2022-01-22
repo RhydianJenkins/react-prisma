@@ -1,9 +1,8 @@
 version: '3.7'
 
 services:
-
-  react-prisma-test:
-    container_name: react-prisma-test
+  react-prisma:
+    container_name: react-prisma
     build:
       context: .
       dockerfile: Dockerfile
