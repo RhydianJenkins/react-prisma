@@ -15,5 +15,5 @@ jobs:
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_REACT_PRISMA }}"
-          projectId: react-prisma-339119
+          projectId: react-prisma-7e570
           channelId: live
