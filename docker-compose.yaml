@@ -11,5 +11,8 @@ services:
     ports:
       - '3000:3000'
     command: sh -c "npm install && npm run start"
+    networks:
+      - react-prisma
 
-
+networks:
+  react-prisma:
