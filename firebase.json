@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": "dist",
+    "site": "react-prisma-7e570",
     "ignore": [
       "firebase.json",
       "**/.*",
