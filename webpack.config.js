@@ -1,4 +1,4 @@
-// const webpack = require('webpack');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const port = process.env.PORT || 3000;
@@ -8,7 +8,8 @@ module.exports = {
   mode: mode,
   entry: './src/index.js',
   output: {
-    filename: 'bundle.[fullhash].js'
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
   devtool: 'inline-source-map',
   module: {
