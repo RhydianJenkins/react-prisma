@@ -1,11 +1,14 @@
-name: Build and Deploy
+name: Build
 on:
+  pull_request:
+    branches:
+      - master
   push:
     branches:
       - master
 
 jobs:
-  build:
+  build-local:
     name: Build local
     runs-on: ubuntu-latest
     steps:
