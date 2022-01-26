@@ -1,8 +1,8 @@
 version: '3.7'
 
 services:
-  ui:
-    container_name: ui
+  next_ui:
+    container_name: next_ui
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,7 +10,7 @@ services:
       - '.:/app'
     ports:
       - '3000:3000'
-    command: sh -c "next build && next start"
+    command: sh -c "npm run dev"
     networks:
       - react-prisma
 
