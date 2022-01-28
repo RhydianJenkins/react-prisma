@@ -5,30 +5,6 @@ on:
       - master
 
 jobs:
-  build-local:
-    name: Build local
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@master
-      - name: Install Dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: dist
-          path: dist
-
-  build-image:
-    name: Build image
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag react-prisma-test:$(date +%s)
-
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
