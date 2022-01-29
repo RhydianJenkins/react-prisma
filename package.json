@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "next build",
-    "start": "NODE_ENV=production node dist/index.js",
+    "start": "NODE_ENV=production next start",
     "typecheck": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js"
