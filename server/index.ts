@@ -11,13 +11,14 @@ const port = process.env.PORT || 3000
     await app.prepare()
     const server = express()
 
-    server.get('/api/hello', (req, res) => {
+    server.get('/api/hello', (_, res: Response) => {
       return res.status(200).json({ msg: 'hello world' })
     })
 
     server.all('*', (req: Request, res: Response) => {
       return handle(req, res)
     })
+
     server.listen(port, (err?: unknown) => {
       if (err) throw err
       console.log(`> Ready on localhost:${port}`)

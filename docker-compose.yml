@@ -11,7 +11,7 @@ services:
       - .:/app
     networks:
       - express_app_network
-    command: sh -c "yarn && yarn build && yarn start"
+    command: sh -c "yarn && yarn dev"
 
 networks:
   express_app_network:

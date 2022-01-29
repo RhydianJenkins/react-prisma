@@ -1,17 +1,17 @@
 import mongoose from 'mongoose'
 
 let db: mongoose.Connection
+const uri = process.env.DB_URI || ''
 
-export const connect = () => {
-  const URL = 'no url'
+const connect = async () => {
   if (db) {
     return
   }
-  mongoose.connect(URL, {
-    // useNewUrlParser: true,
-    // useFindAndModify: false,
-    // useUnifiedTopology: true,
-    // useCreateIndex: true,
+  mongoose.connect(uri, {
+    dbName: process.env.DB_NAME || 'dev',
+    user: process.env.DB_USER || 'dev',
+    pass: process.env.DB_PASS || 'dev',
+    autoIndex: true,
   })
   db = mongoose.connection
   db.once('open', () => {
@@ -22,9 +22,12 @@ export const connect = () => {
   })
 }
 
-export const disconnect = () => {
-  if (!db) {
-    return
-  }
-  mongoose.disconnect()
+const disconnect = async () => {
+  return db ? mongoose.disconnect() : Promise.resolve()
+}
+
+// TODO
+export const get = async () => {
+  await connect()
+  disconnect()
 }
