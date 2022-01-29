@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  client:
+    container_name: client
+    working_dir: /app
+    image: node:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    networks:
+      - express_app_network
+    command: sh -c "yarn && yarn dev"
+
+networks:
+  express_app_network:
