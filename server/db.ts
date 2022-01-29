@@ -8,10 +8,10 @@ export const connect = () => {
     return
   }
   mongoose.connect(URL, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
+    // useNewUrlParser: true,
+    // useFindAndModify: false,
+    // useUnifiedTopology: true,
+    // useCreateIndex: true,
   })
   db = mongoose.connection
   db.once('open', () => {
