@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 let db: mongoose.Connection
 const uri = process.env.DB_URI || ''
 
-const connect = async () => {
+export const connect = async () => {
   if (db) {
     return
   }
@@ -14,20 +14,18 @@ const connect = async () => {
     autoIndex: true,
   })
   db = mongoose.connection
-  db.once('open', () => {
-    console.log('Connected to database')
-  })
-  db.on('error', () => {
-    console.log('Error connecting to database')
-  })
+  db.once('open', () => console.log('Connected to database'))
+  db.on('error', () => console.log('Error connecting to database'))
 }
 
-const disconnect = async () => {
+export const disconnect = async () => {
   return db ? mongoose.disconnect() : Promise.resolve()
 }
 
 // TODO
 export const get = async () => {
-  await connect()
-  disconnect()
+  if (!db) {
+    throw new Error('Database not connected')
+  }
+  console.log('GET DB...')
 }
