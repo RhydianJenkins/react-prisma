@@ -1,31 +1,41 @@
 import mongoose from 'mongoose'
 
-let db: mongoose.Connection
-const uri = process.env.DB_URI || ''
+let con: mongoose.Connection
 
 export const connect = async () => {
-  if (db) {
-    return
-  }
-  mongoose.connect(uri, {
+  if (con) return
+
+  const uri = process.env.DB_URI || ''
+  const config = {
     dbName: process.env.DB_NAME || 'dev',
     user: process.env.DB_USER || 'dev',
     pass: process.env.DB_PASS || 'dev',
     autoIndex: true,
-  })
-  db = mongoose.connection
-  db.once('open', () => console.log('Connected to database'))
-  db.on('error', () => console.log('Error connecting to database'))
-}
-
-export const disconnect = async () => {
-  return db ? mongoose.disconnect() : Promise.resolve()
-}
-
-// TODO
-export const get = async () => {
-  if (!db) {
-    throw new Error('Database not connected')
   }
-  console.log('GET DB...')
+
+  mongoose.connect(uri, config)
+  // await mongoose.connect(uri, config) // TODO do we not need to await this?
+
+  con = mongoose.connection
+  con.once('open', () => console.log('Connected to database'))
+  con.on('error', () => console.log('Error connecting to database'))
+}
+
+export const disconnect = () => {
+  return con ? mongoose.disconnect() : Promise.resolve()
+}
+
+export const testDB = async () => {
+  if (!con) {
+    return Promise.reject({
+      success: false,
+      msg: 'No connection to the database',
+    })
+  }
+
+  // TODO how to use the DB?
+
+  return Promise.resolve({
+    success: true,
+  })
 }

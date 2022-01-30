@@ -38,6 +38,5 @@ services:
     networks:
       - express_app_network
 
-
 networks:
   express_app_network:
