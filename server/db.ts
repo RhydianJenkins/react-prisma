@@ -11,10 +11,14 @@ export const connect = async () => {
     user: process.env.DB_USER || 'dev',
     pass: process.env.DB_PASS || 'dev',
     autoIndex: true,
+    auth: {
+      user: 'root',
+      password: 'root',
+    },
   }
 
-  mongoose.connect(uri, config)
-  // await mongoose.connect(uri, config) // TODO do we not need to await this?
+  await mongoose.connect(uri, config)
+  mongoose.set('debug', true)
 
   con = mongoose.connection
   con.once('open', () => console.log('Connected to database'))
@@ -33,7 +37,15 @@ export const testDB = async () => {
     })
   }
 
-  // TODO how to use the DB?
+  const Kitten = mongoose.model(
+    'Kitten',
+    new mongoose.Schema({
+      name: String,
+    })
+  )
+  const fluffy = new Kitten({ name: 'fluffy' })
+  await fluffy.save()
+  fluffy.speak()
 
   return Promise.resolve({
     success: true,

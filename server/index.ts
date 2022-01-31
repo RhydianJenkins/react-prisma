@@ -14,8 +14,10 @@ const port = process.env.PORT || 3000
 
     server.get('/api/hello', async (_, res: Response) => {
       await connect() // TODO do we want to connect every time the API is called?
-      const dataFromDb = await testDB().catch((err) => err)
-      return res.status(dataFromDb.success ? 200 : 500).json({ ...dataFromDb })
+      const dataFromDb = await testDB().catch((err) => console.error(err))
+      return res
+        .status(!dataFromDb?.success ? 500 : 200)
+        .json({ ...dataFromDb })
     })
 
     server.all('*', (req: Request, res: Response) => {
