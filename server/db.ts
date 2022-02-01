@@ -1,33 +1,53 @@
 import mongoose from 'mongoose'
 
-let db: mongoose.Connection
-const uri = process.env.DB_URI || ''
+let con: mongoose.Connection
 
-const connect = async () => {
-  if (db) {
-    return
-  }
-  mongoose.connect(uri, {
+export const connect = async () => {
+  if (con) return
+
+  const uri = process.env.DB_URI || ''
+  const config = {
     dbName: process.env.DB_NAME || 'dev',
     user: process.env.DB_USER || 'dev',
     pass: process.env.DB_PASS || 'dev',
     autoIndex: true,
-  })
-  db = mongoose.connection
-  db.once('open', () => {
-    console.log('Connected to database')
-  })
-  db.on('error', () => {
-    console.log('Error connecting to database')
-  })
+    auth: {
+      user: 'root',
+      password: 'root',
+    },
+  }
+
+  await mongoose.connect(uri, config)
+  mongoose.set('debug', true)
+
+  con = mongoose.connection
+  con.once('open', () => console.log('Connected to database'))
+  con.on('error', () => console.log('Error connecting to database'))
 }
 
-const disconnect = async () => {
-  return db ? mongoose.disconnect() : Promise.resolve()
+export const disconnect = () => {
+  return con ? mongoose.disconnect() : Promise.resolve()
 }
 
-// TODO
-export const get = async () => {
-  await connect()
-  disconnect()
+export const testDB = async () => {
+  if (!con) {
+    return Promise.reject({
+      success: false,
+      msg: 'No connection to the database. Have you called connect()?',
+    })
+  }
+
+  const Kitten = mongoose.model(
+    'Kitten',
+    new mongoose.Schema({
+      name: String,
+    })
+  )
+  const fluffy = new Kitten({ name: 'fluffy' })
+  await fluffy.save()
+  fluffy.speak()
+
+  return Promise.resolve({
+    success: true,
+  })
 }

@@ -13,5 +13,34 @@ services:
       - express_app_network
     command: sh -c "yarn && yarn dev"
 
+  mongo_db:
+    container_name: mongo_db
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+    networks:
+      - express_app_network
+
+  mongo_express:
+    container_name: mongo_express
+    image: mongo-express
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo_db:27017/test
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: 1
+      ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+      ME_CONFIG_MONGODB_AUTH_USERNAME: root
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: root
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo_db
+    networks:
+      - express_app_network
+
 networks:
   express_app_network:
