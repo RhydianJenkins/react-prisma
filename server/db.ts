@@ -33,7 +33,7 @@ export const testDB = async () => {
   if (!con) {
     return Promise.reject({
       success: false,
-      msg: 'No connection to the database',
+      msg: 'No connection to the database. Have you called connect()?',
     })
   }
 
