@@ -1,35 +1,25 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import mongoose from 'mongoose'
 import next from 'next'
-import { connect, testDB } from './db'
+import menuRoutes from './routes'
 
 const dev = process.env.NODE_ENV !== 'production'
+const server = express()
 const app = next({ dev })
-const handle = app.getRequestHandler()
 const port = process.env.PORT || 3000
+const uri =
+  process.env.DB_URI || 'mongodb://username:password@mongo_db:27017/local' // TODO can't read env?
 
-;(async () => {
-  try {
-    await app.prepare()
-    const server = express()
+if (!uri) {
+  throw new Error('No mongoDB URI provided in env file')
+}
 
-    server.get('/api/hello', async (_, res: Response) => {
-      await connect() // TODO do we want to connect every time the API is called?
-      const dataFromDb = await testDB().catch((err) => console.error(err))
-      return res
-        .status(!dataFromDb?.success ? 500 : 200)
-        .json({ ...dataFromDb })
-    })
-
-    server.all('*', (req: Request, res: Response) => {
-      return handle(req, res)
-    })
-
-    server.listen(port, (err?: unknown) => {
-      if (err) throw err
-      console.log(`> Ready on localhost:${port}`)
-    })
-  } catch (e) {
-    console.error(e)
-    process.exit(1)
-  }
-})()
+app.prepare()
+mongoose
+  .connect(uri)
+  .then(() => server.use(menuRoutes))
+  .then(() =>
+    server.listen(port, () =>
+      console.log(`> Ready on http://localhost:${port}`)
+    )
+  )
