@@ -8,7 +8,8 @@ const server = express()
 const app = next({ dev })
 const port = process.env.PORT || 3000
 const uri =
-  process.env.DB_URI || 'mongodb://username:password@mongo_db:27017/local' // TODO can't read env?
+  process.env.DB_URI ||
+  'mongodb://username:password@mongo_db:27017/test_db_name' // TODO can't read env?
 
 if (!uri) {
   throw new Error('No mongoDB URI provided in env file')
