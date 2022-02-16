@@ -11,6 +11,8 @@ services:
       - .:/app
     networks:
       - express_app_network
+    depends_on:
+      - mongo_db
     command: sh -c "yarn && yarn dev"
 
   mongo_db:
